@@ -1,10 +1,15 @@
 {
 	"photocraft": "0.9.0",
-	"cadcraft": "0.7.0",
-	"effectcraft": "0.10.0",
-	"filmcraft": "0.8.0",
+	"lightcraft": "0.8.0",
+	"vectorcraft": "0.11.0",
+	"designcraft": "0.8.0",
 	"figcraft": "0.6.0",
+	"filmcraft": "0.8.0",
+	"effectcraft": "0.10.0",
+	"soundcraft": "0.7.0",
+	"wordcraft": "0.7.0",
 	"gridcraft": "0.7.0",
 	"deckcraft": "0.7.0",
-	"wordcraft": "0.7.0"
+	"pdfcraft": "0.8.0",
+	"cadcraft": "0.7.0"
 }

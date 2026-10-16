@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { apps, github } from '$lib/apps';
+	import { base } from '$app/paths';
+	import { apps, categories, github } from '$lib/apps';
 	import { funnel } from '$lib/funnel';
 
 	let { data } = $props();
@@ -8,6 +9,11 @@
 	let switchButton = $state<HTMLButtonElement>();
 	let aboutButton = $state<HTMLButtonElement>();
 	let menu = $state<HTMLElement>();
+
+	// The menu's groups, each with its apps, empty ones left out.
+	const groups = categories
+		.map((category) => ({ category, apps: apps.filter((app) => app.category === category) }))
+		.filter((group) => group.apps.length > 0);
 
 	function toggleFullscreen() {
 		if (document.fullscreenElement) document.exitFullscreen();
@@ -22,7 +28,7 @@
 
 <svelte:head>
 	<title>{app.name} · Crafts</title>
-	<meta name="description" content="{app.name} ({app.description}) in your browser. An unofficial host of the open-source ArtCraft app." />
+	<meta name="description" content="{app.name} in your browser: an unofficial host of the open-source app." />
 </svelte:head>
 
 <div class="flex h-full flex-col">
@@ -76,28 +82,33 @@
 		{@attach funnel(() => switchButton)}
 		class="{popover} left-3 max-h-[calc(100vh-56px)] w-[min(300px,calc(100vw-24px))] overflow-auto p-2"
 	>
-		<h2 class="mx-2.5 mt-1.5 mb-2 text-[10px] font-semibold tracking-[0.12em] text-dim uppercase">
-			Apps
-		</h2>
-		<nav>
-			{#each apps as other (other.id)}
-				<a
-					href="/{other.id}/"
-					onclick={() => menu?.hidePopover()}
-					aria-current={other.id === app.id ? 'page' : undefined}
-					style:--app-colour={other.colour}
-					class="flex items-center gap-3 rounded-lg px-2.5 py-2 no-underline hover:bg-hover focus-visible:bg-hover focus-visible:outline-none aria-[current]:bg-[color-mix(in_srgb,var(--color-accent)_22%,var(--color-panel))] aria-[current]:after:ml-auto aria-[current]:after:text-accent aria-[current]:after:content-['✓']"
+		<!-- About six apps tall, then it scrolls. -->
+		<nav class="max-h-[calc(6*46px+3*28px)] overflow-y-auto">
+			{#each groups as group (group.category)}
+				<h2
+					class="mx-2.5 mt-1.5 mb-1 text-[10px] font-semibold tracking-[0.12em] text-dim uppercase"
 				>
-					<span
-						class="grid size-[30px] place-items-center rounded-[7px] border border-line text-(--app-colour)"
+					{group.category}
+				</h2>
+				{#each group.apps as other (other.id)}
+					<a
+						href="{base}/{other.id}/"
+						onclick={() => menu?.hidePopover()}
+						aria-current={other.id === app.id ? 'page' : undefined}
+						style:--app-colour={other.colour}
+						class="flex items-center gap-3 rounded-lg px-2.5 py-2 no-underline hover:bg-hover focus-visible:bg-hover focus-visible:outline-none aria-[current]:bg-[color-mix(in_srgb,var(--color-accent)_22%,var(--color-panel))] aria-[current]:after:ml-auto aria-[current]:after:text-accent aria-[current]:after:content-['✓']"
 					>
-						<svg viewBox="0 0 24 24">{@html other.icon}</svg>
-					</span>
-					<span>
-						{other.name}
-						<small class="block text-[11px] text-dim">{other.description}</small>
-					</span>
-				</a>
+						<span
+							class="grid size-[30px] place-items-center rounded-[7px] border border-line text-(--app-colour)"
+						>
+							<svg viewBox="0 0 24 24">{@html other.icon}</svg>
+						</span>
+						<span>
+							{other.name}
+							<small class="block text-[11px] text-dim">{other.description}</small>
+						</span>
+					</a>
+				{/each}
 			{/each}
 		</nav>
 		<p class="mx-2.5 mt-2 mb-1 border-t border-line pt-2 text-[11px] text-dim">
@@ -113,8 +124,8 @@
 	>
 		<h2 class="mb-2 text-sm font-bold">Unofficial host</h2>
 		<p class="mb-2.5 text-dim">
-			This is not an official ArtCraft site, and I am not affiliated with or endorsed by ArtCraft or
-			Storytold. These are their open-source web builds, served unmodified from my own server.
+			This is not an official ArtCraft site, and it is not affiliated with or endorsed by ArtCraft or
+			Storytold. These are their open-source web builds, served unmodified.
 		</p>
 		<p class="mb-2.5 text-dim">{app.name} is licensed under MIT or Apache-2.0, at your option.</p>
 		<ul class="grid gap-1.5">
@@ -131,7 +142,7 @@
 				<a class={link} href="{github(app)}/blob/main/NOTICE" target="_blank" rel="noopener">NOTICE</a>
 			</li>
 			<li>
-				<a class={link} href="https://git.hu-tao.dev/craft-projects/pages" target="_blank" rel="noopener">
+				<a class={link} href={__SOURCE_URL__} target="_blank" rel="noopener">
 					How this site is published
 				</a>
 			</li>
@@ -141,7 +152,7 @@
 	<!-- The app itself: upstream's web build, unpacked under /apps/ by
 	     scripts/fetch-apps.sh. -->
 	<iframe
-		src="/apps/{app.id}/"
+		src="{base}/apps/{app.id}/"
 		title="{app.name} editor"
 		allow="fullscreen; clipboard-read; clipboard-write; autoplay; microphone"
 		class="w-full flex-1 border-0 bg-bg"

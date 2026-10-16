@@ -1,9 +1,28 @@
-# pages
+# craft-apps
 
-[crafts.hu-tao.dev](https://crafts.hu-tao.dev): the browser builds of the
-storytold apps mirrored in this org (photocraft, cadcraft, effectcraft,
-filmcraft, figcraft, gridcraft, deckcraft and wordcraft) under one bar with an
-app switcher. An unofficial host, not affiliated with ArtCraft.
+The open-source [storytold](https://github.com/storytold) craft apps
+(PhotoCraft, LightCraft, VectorCraft, DesignCraft, FigCraft, FilmCraft,
+EffectCraft, SoundCraft, WordCraft, GridCraft, DeckCraft, PdfCraft and
+CADCraft) in your browser, under one bar with an app switcher. Live at
+[crafts.hu-tao.dev](https://crafts.hu-tao.dev).
+
+An unofficial host: not affiliated with or endorsed by ArtCraft or Storytold.
+Each app is the upstream web build, served unmodified.
+
+## Host your own on GitHub Pages
+
+1. Fork this repo.
+2. In the fork: Settings → Pages → Build and deployment → Source:
+   **GitHub Actions**.
+3. Actions → Pages → Run workflow (or push anything to `main`).
+
+The site appears at `https://<you>.github.io/<repo>/`. Nothing else is needed:
+no server, no build tools on your machine. To keep the apps current, install
+[Renovate](https://github.com/apps/renovate) on the fork, or bump the versions
+in `sites.json` by hand.
+
+Anywhere else that serves static files works too: run the steps below and
+upload `build/`.
 
 A SvelteKit site, prerendered to static files. Each app gets a page at
 `/<name>/` that frames upstream's own build from `/apps/<name>/`. The apps are
@@ -28,9 +47,16 @@ pnpm dev
 
 ## Publishing
 
-`.forgejo/workflows/pages.yml` runs on every push to `main`: install, fetch
-the apps, build, and upload `build/` as the `pages` artifact, which the VPS
-pulls and serves. See the handbook's Pages chapter in hutao/vps.
+The same repo lives in two places, and each forge runs only its own workflow:
 
-This is the only repo in the org with Actions on. The mirrors carry upstream's
-`.github/workflows`, which Forgejo would otherwise run on every mirrored push.
+- **GitHub** ([1Git2Clone/craft-apps](https://github.com/1Git2Clone/craft-apps)):
+  `.github/workflows/pages.yml` deploys to GitHub Pages.
+- **Forgejo** (`craft-projects/pages` on git.hu-tao.dev):
+  `.forgejo/workflows/pages.yml` uploads `build/` as the `pages` artifact,
+  which the VPS behind crafts.hu-tao.dev pulls and serves. See the handbook's
+  Pages chapter in hutao/vps. It is the only repo in that org with Actions on:
+  the mirrors there carry upstream's `.github/workflows`, which Forgejo would
+  otherwise run on every mirrored push.
+
+Adding an app is one line in `sites.json`. Without an entry in
+`src/lib/apps.ts` it is listed under "Other" with a plain icon.

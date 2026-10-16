@@ -103,6 +103,7 @@ function play(popover: HTMLElement, opener: HTMLElement, opening: boolean) {
 			transformOrigin: `0 ${i * SLICE_PX}px`
 		});
 		slice.appendChild(copy);
+		keepScroll(popover, copy);
 		slices.push(slice);
 	}
 
@@ -156,6 +157,15 @@ function play(popover: HTMLElement, opener: HTMLElement, opening: boolean) {
 		layer.remove();
 		popover.style.visibility = '';
 	});
+}
+
+// A copy starts scrolled to the top. Scroll each of its scrollable parts to
+// where the original is, or a menu scrolled down would jump while it closes.
+function keepScroll(original: Element, copy: Element) {
+	if (original.scrollTop) copy.scrollTop = original.scrollTop;
+	for (let i = 0; i < original.children.length; i++) {
+		keepScroll(original.children[i], copy.children[i]);
+	}
 }
 
 // The visible part of the funnel, as SVG path data: down the left edge at
