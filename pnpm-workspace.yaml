@@ -1,0 +1,24 @@
+# Refuse to install on a Node outside package.json's `engines`.
+engineStrict: true
+nodeLinker: hoisted
+
+allowBuilds:
+  esbuild: true
+
+# pnpm 10 reads this; pnpm 11 and later read allowBuilds above. Both are here
+# so the repo installs the same way on either, and neither leaves esbuild
+# unbuilt.
+onlyBuiltDependencies:
+  - esbuild
+
+# Vite+ ships its own build of Vite. Point every package that asks for `vite`
+# (SvelteKit and its Svelte plugin among them) at that same one.
+overrides:
+  vite: npm:@voidzero-dev/vite-plus-core@1.2.0
+
+# That build reports Vite+'s own version (1.x), which no plugin's `vite: ^8`
+# range accepts, though it is Vite 8 underneath. The mismatch is the override
+# above, on purpose.
+peerDependencyRules:
+  allowedVersions:
+    vite: '*'

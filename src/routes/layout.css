@@ -1,0 +1,60 @@
+@import 'tailwindcss';
+
+/* Photoshop's dark UI: neutral greys, and the blue of its icon as the accent. */
+@theme {
+	--color-bg: #262626;
+	--color-panel: #323232;
+	--color-hover: #3e3e3e;
+	--color-line: #474747;
+	--color-fg: #e3e3e3;
+	--color-dim: #a3a3a3;
+	--color-accent: #31a8ff;
+}
+
+@layer base {
+	html,
+	body {
+		height: 100%;
+		background: var(--color-bg);
+		color: var(--color-fg);
+		font:
+			13px/1.4 system-ui,
+			sans-serif;
+	}
+
+	svg {
+		flex: none;
+		width: 18px;
+		height: 18px;
+		fill: none;
+		stroke: currentColor;
+		stroke-width: 1.75;
+		stroke-linecap: round;
+		stroke-linejoin: round;
+	}
+}
+
+/* The funnel animation (src/lib/funnel.ts) builds these at runtime, so they
+   are plain CSS rather than utility classes. */
+
+/* The layer is its own backing panel, clipped to the funnel's outline. */
+.funnel {
+	position: fixed;
+	inset: 0;
+	z-index: 10;
+	background: var(--color-panel);
+	pointer-events: none;
+}
+
+/* One slice: a plain box on whole pixels, so its cut edges stay crisp. */
+.funnel > div {
+	position: absolute;
+	left: 0;
+	width: 100%;
+	overflow: hidden;
+}
+
+/* The copy of the popover inside a slice. A shadow per slice would stack. */
+.funnel > div > * {
+	box-shadow: none !important;
+}

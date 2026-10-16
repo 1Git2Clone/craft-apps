@@ -1,0 +1,5 @@
+node_modules
+.svelte-kit
+build
+# The apps themselves, fetched by scripts/fetch-apps.sh. Never committed.
+static/apps
