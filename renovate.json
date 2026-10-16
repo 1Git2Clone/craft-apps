@@ -1,0 +1,15 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended"],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "The <repo>:<version> lines in SITES are storytold GitHub releases",
+      "managerFilePatterns": ["/^\\.forgejo/workflows/pages\\.yml$/"],
+      "matchStrings": ["^\\s+(?<depName>[a-z]+craft):(?<currentValue>\\d+\\.\\d+\\.\\d+)$"],
+      "packageNameTemplate": "storytold/{{{depName}}}",
+      "datasourceTemplate": "github-releases",
+      "extractVersionTemplate": "^v(?<version>.+)$"
+    }
+  ]
+}

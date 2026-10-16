@@ -27,6 +27,7 @@ jobs:
       # Podman refuses to unpack actions through Debian's /var/run -> /run
       # symlink; see the same step in the compress repo's pages workflow.
       - run: rm /var/run && cp -a /run /var/run
+      - uses: actions/checkout@v4
 
       # Upstream already publishes each browser build as a static site, so
       # take the release instead of building the wasm on the runner. Each is
@@ -48,6 +49,14 @@ jobs:
             mv "$repo-web-$version" "../out/$repo"
             cd ..
           done
+
+      # The crafts.hu-tao.dev shell sits at the root, beside the apps, and
+      # reads each app's version from versions.json.
+      - name: Add the shell
+        run: |
+          cp index.html out/
+          echo "$SITES" | awk -F: 'NF == 2 { printf "%s\"%s\":\"%s\"", n++ ? "," : "{", $1, $2 } END { print "}" }' > out/versions.json
+          cat out/versions.json
 
       # The VPS fetches the newest artifact named exactly `pages` and unpacks
       # it to <pages volume>/craft-projects/pages; see the compress repo's
