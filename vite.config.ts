@@ -21,6 +21,8 @@ export default defineConfig({
 	},
 
 	lint: {
-		ignorePatterns: ['build/**', '.svelte-kit/**', 'static/apps/**']
+		ignorePatterns: ['build/**', '.svelte-kit/**', 'static/apps/**'],
+		options: { typeAware: true },
+		rules: { 'typescript/no-deprecated': 'error' }
 	}
 });
