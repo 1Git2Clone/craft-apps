@@ -34,6 +34,10 @@ jobs:
       # The shell: one prerendered page per app, with the apps under /apps/.
       - run: pnpm build
 
+      # A .br beside each file, which caddy serves as it is. Only here: GitHub
+      # Pages compresses on its own and would just publish the copies.
+      - run: pnpm precompress
+
       # The VPS fetches the newest artifact named exactly `pages` and unpacks
       # it to <pages volume>/craft-projects/pages; see the compress repo's
       # workflow for why this is forgejo/upload-artifact and not actions/.

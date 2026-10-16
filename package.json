@@ -5,6 +5,7 @@
 	"type": "module",
 	"scripts": {
 		"fetch-apps": "sh scripts/fetch-apps.sh",
+		"precompress": "node scripts/precompress.mjs",
 		"dev": "vp dev",
 		"build": "vp build",
 		"preview": "vp preview",
