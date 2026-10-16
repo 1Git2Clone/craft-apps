@@ -44,12 +44,21 @@
   #menu small { display: block; color: var(--dim); font-size: 11px; }
   #menu p { margin: 8px 10px 4px; padding-top: 8px; border-top: 1px solid var(--line); color: var(--dim); font-size: 11px; }
 
-  @media (max-width: 480px) { .brand, .sep { display: none; } }
+  .tag { color: var(--dim); font-size: 11px; border: 1px solid var(--line); border-radius: 4px; padding: 1px 5px; }
+  #about { position: fixed; inset: 44px 12px auto auto; margin: 0; width: min(340px, calc(100vw - 24px)); padding: 14px 16px;
+           background: var(--panel); color: var(--text); border: 1px solid var(--line); border-radius: 10px; box-shadow: 0 12px 32px #0008; }
+  #about h2 { margin: 0 0 8px; font-size: 14px; }
+  #about p { margin: 0 0 10px; color: var(--dim); }
+  #about ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 6px; }
+  #about a { color: var(--accent); }
+
+  @media (max-width: 480px) { .brand, .sep, .tag { display: none; } }
 </style>
 </head>
 <body>
 <header>
   <span class="brand">Crafts</span>
+  <span class="tag">unofficial</span>
   <span class="sep"></span>
   <button class="switch" popovertarget="menu" aria-haspopup="true">
     <span id="current">…</span>
@@ -57,9 +66,9 @@
   </button>
   <a class="badge" id="version" target="_blank" rel="noopener" hidden></a>
   <span class="spacer"></span>
-  <a class="icon-btn" id="source" target="_blank" rel="noopener" title="Source">
-    <svg viewBox="0 0 24 24"><path d="m16 18 6-6-6-6M8 6l-6 6 6 6"/></svg>
-  </a>
+  <button class="icon-btn" popovertarget="about" title="About">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 16v-4M12 8h.01"/></svg>
+  </button>
   <button class="icon-btn" id="fullscreen" title="Fullscreen">
     <svg viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
   </button>
@@ -68,7 +77,19 @@
 <div id="menu" popover>
   <h2>Apps</h2>
   <nav id="apps"></nav>
-  <p>Free to use. No account needed.</p>
+  <p>Unofficial host. Not affiliated with ArtCraft.</p>
+</div>
+
+<div id="about" popover>
+  <h2>Unofficial host</h2>
+  <p>This is not an official ArtCraft site, and I am not affiliated with or endorsed by ArtCraft or Storytold.
+     These are their open-source web builds, served unmodified from my own server.</p>
+  <p><span id="about-name"></span> is licensed under MIT or Apache-2.0, at your option.</p>
+  <ul>
+    <li><a id="repo" target="_blank" rel="noopener">Source on GitHub</a></li>
+    <li><a id="mit" target="_blank" rel="noopener">LICENSE-MIT</a> · <a id="apache" target="_blank" rel="noopener">LICENSE-APACHE</a> · <a id="notice" target="_blank" rel="noopener">NOTICE</a></li>
+    <li><a href="https://git.hu-tao.dev/craft-projects/pages" target="_blank" rel="noopener">How this site is published</a></li>
+  </ul>
 </div>
 
 <iframe id="frame" title="App" allow="fullscreen; clipboard-read; clipboard-write; autoplay; microphone"></iframe>
@@ -105,7 +126,12 @@
     $("frame").title = `${name} editor`;
     document.title = `${name} · Crafts`;
     $("current").textContent = name;
-    $("source").href = `https://git.hu-tao.dev/craft-projects/${id}`;
+    const gh = `https://github.com/storytold/${id}`;
+    $("about-name").textContent = name;
+    $("repo").href = gh;
+    $("mit").href = `${gh}/blob/main/LICENSE-MIT`;
+    $("apache").href = `${gh}/blob/main/LICENSE-APACHE`;
+    $("notice").href = `${gh}/blob/main/NOTICE`;
     for (const a of $("apps").children) a.toggleAttribute("aria-current", a.hash === `#${id}`);
 
     const v = versions[id];
