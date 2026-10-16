@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="dark">
-<meta name="theme-color" content="#111b25">
+<meta name="theme-color" content="#1a0f12">
 <title>Crafts</title>
 <!--
   The crafts.<domain> shell: a bar with an app switcher and the pinned version,
@@ -14,12 +14,12 @@
   versions.json is written by the workflow from its SITES list.
 -->
 <style>
-  :root { --bg: #111b25; --panel: #162231; --line: #24344a; --text: #e6edf5; --dim: #8fa1b5; --accent: #3b8cff; --ok: #3ccf8e; }
+  :root { --bg: #1a0f12; --panel: #241519; --line: #3d2228; --text: #f3e6e8; --dim: #b39197; --accent: #ec6b6f; --ok: #ec6b6f; }
   * { box-sizing: border-box; }
   html, body { margin: 0; height: 100%; background: var(--bg); color: var(--text); font: 13px/1.4 system-ui, sans-serif; }
   body { display: flex; flex-direction: column; }
   header { display: flex; align-items: center; gap: 12px; height: 40px; padding: 0 12px; border-bottom: 1px solid var(--line); flex: none; }
-  .brand { font-weight: 700; font-size: 16px; letter-spacing: -.01em; }
+  .brand { color: var(--accent); font-weight: 700; font-size: 16px; letter-spacing: -.01em; }
   .sep { width: 1px; height: 18px; background: var(--line); }
   button, a { color: inherit; font: inherit; }
   .switch { display: flex; align-items: center; gap: 6px; background: none; border: 1px solid transparent; border-radius: 6px; padding: 4px 8px; cursor: pointer; }
@@ -31,14 +31,14 @@
   .icon-btn { background: none; border: 0; padding: 4px; cursor: pointer; color: var(--dim); text-decoration: none; display: flex; }
   .icon-btn:hover { color: var(--text); }
   svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; flex: none; }
-  iframe { flex: 1; width: 100%; border: 0; background: #1e1e1e; }
+  iframe { flex: 1; width: 100%; border: 0; background: var(--bg); }
 
   #menu { position: fixed; inset: 44px auto auto 12px; margin: 0; width: min(300px, calc(100vw - 24px)); max-height: calc(100vh - 56px); overflow: auto;
           padding: 8px; background: var(--panel); color: var(--text); border: 1px solid var(--line); border-radius: 10px; box-shadow: 0 12px 32px #0008; }
   #menu h2 { margin: 6px 10px 8px; font-size: 10px; font-weight: 600; letter-spacing: .12em; color: var(--dim); text-transform: uppercase; }
   #menu a { display: flex; align-items: center; gap: 12px; padding: 8px 10px; border-radius: 8px; text-decoration: none; }
-  #menu a:hover, #menu a:focus-visible { background: #1d2c3f; outline: none; }
-  #menu a[aria-current] { background: #1f3550; }
+  #menu a:hover, #menu a:focus-visible { background: #2f1a1f; outline: none; }
+  #menu a[aria-current] { background: #44222a; }
   #menu a[aria-current]::after { content: "✓"; margin-left: auto; color: var(--accent); }
   #menu .ic { display: grid; place-items: center; width: 30px; height: 30px; border: 1px solid var(--line); border-radius: 7px; color: var(--c); }
   #menu small { display: block; color: var(--dim); font-size: 11px; }
