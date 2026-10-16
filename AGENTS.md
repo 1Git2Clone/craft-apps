@@ -43,7 +43,9 @@ src/lib/apps.ts            each app's name, description, category, icon, colour
 src/lib/icons.ts           icons by English name
 src/lib/colours.ts         the Colour type, hex(), the named app colours
 src/lib/themes.ts          the Theme type and the top bar's themes
-src/lib/theme.svelte.ts    the current theme (remembered per browser)
+src/lib/themes.tailwind.ts Tailwind's colour utilities, made from the theme slots
+src/lib/theme.svelte.ts    the current theme, set on <html> (remembered per browser)
+src/hooks.server.ts        puts the default theme into the prerendered <html>
 src/lib/funnel.ts          the popover open/close animation
 src/lib/components/
   layout/                  page chrome: Header, Popover, IconButton
@@ -75,7 +77,8 @@ src/routes/[app]/          one prerendered page per app
 - Make invalid values unrepresentable. `Colour` is a branded type that only
   `hex()` can produce, and `hex()` checks the code at compile time. A plain
   `string` is not a colour.
-- Themes are first-class: a `Theme` must set every `ThemeSlot`, and switching
+- Themes are first-class: a `Theme` must set every slot in `themeSlots`
+  (Tailwind's colour utilities come from the same list), and switching
   is assigning a `ThemeName`. Add a slot to the type before using it.
 - One source of truth per fact. Versions live only in `sites.json` (the page,
   the fetch script and Renovate all read it). Adding an app is one line

@@ -78,9 +78,6 @@ function play(popover: HTMLElement, opener: HTMLElement, opening: boolean) {
 
 	const layer = document.body.appendChild(document.createElement('div'));
 	layer.className = 'funnel';
-	// The layer hangs off <body>, outside any theme set on the popover's
-	// ancestors, so it takes the popover's own background.
-	layer.style.background = getComputedStyle(popover).backgroundColor;
 	// Clipped to nothing until the first frame gives it a shape.
 	layer.style.clipPath = 'path("M0,0Z")';
 

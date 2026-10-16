@@ -1,7 +1,16 @@
 import { hex, type Colour } from './colours';
 
-/** Every colour the top bar and its menus use. A theme has to set them all. */
-export type ThemeSlot = 'bg' | 'panel' | 'hover' | 'line' | 'fg' | 'dim' | 'accent';
+/**
+ * Every colour the top bar and its menus use. A theme has to set them all,
+ * and Tailwind makes its colour utilities (bg-panel, text-fg, …) from this
+ * list too (themes.tailwind.ts), so a slot is one word added here.
+ */
+export const themeSlots = ['bg', 'panel', 'hover', 'line', 'fg', 'dim', 'accent'] as const;
+
+export type ThemeSlot = (typeof themeSlots)[number];
+
+/** The CSS custom property a slot is set in. */
+export const slotProperty = (slot: ThemeSlot) => `--color-${slot}` as const;
 
 export interface Theme {
 	label: string;
@@ -83,6 +92,4 @@ export const isThemeName = (name: unknown): name is ThemeName =>
  * colour utilities read these, so everything inside that element follows.
  */
 export const themeStyle = (name: ThemeName) =>
-	Object.entries(themes[name].colours)
-		.map(([slot, colour]) => `--color-${slot}: ${colour}`)
-		.join('; ');
+	themeSlots.map((slot) => `${slotProperty(slot)}: ${themes[name].colours[slot]}`).join('; ');
